@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps App - Trang chủ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        input {
+            display: block;
+            width: 95%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Quản lý Sinh Viên</h2>
+        <a href="about.html">Chuyển đến trang Thông tin sinh viên (/about)</a>
+        <hr>
+
+        <h3>Thêm Sinh Viên Mới</h3>
+        <form id="userForm">
+            <input type="text" id="name" placeholder="Họ và tên" required>
+            <input type="text" id="studentId" placeholder="Mã số sinh viên" required>
+            <button type="submit">Thêm Sinh Viên</button>
+        </form>
+
+        <h3>Danh sách Sinh Viên (từ Database)</h3>
+        <ul id="userList"></ul>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/users';
+
+        // Lấy dữ liệu từ Backend
+        async function fetchUsers() {
+            try {
+                const res = await fetch(API_URL);
+                const users = await res.json();
+                const list = document.getElementById('userList');
+                list.innerHTML = '';
+                users.forEach(user => {
+                    list.innerHTML += `<li><strong>${user.name}</strong> - MSSV: ${user.studentId}</li>`;
+                });
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu:", error);
+            }
+        }
+
+        // Gửi dữ liệu lên Backend
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const studentId = document.getElementById('studentId').value;
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, studentId })
+            });
+
+            document.getElementById('name').value = '';
+            document.getElementById('studentId').value = '';
+            fetchUsers(); // Cập nhật lại danh sách
+        });
+
+        // Chạy khi mở trang
+        fetchUsers();
+    </script>
+</body>
+
+</html>
