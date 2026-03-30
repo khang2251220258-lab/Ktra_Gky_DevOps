@@ -1,13 +1,15 @@
 const express = require('express');
 const { Sequelize, DataTypes } = require('sequelize');
 const cors = require('cors');
-require('dotenv').config({ path: '../.env' }); // Trỏ ra file .env
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Trỏ ra file .env
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 const PORT = process.env.PORT || 5000;
+const DB_PORT = Number(process.env.DB_PORT || 3306);
 
 // === 1. KẾT NỐI DATABASE MYSQL ===
 const sequelize = new Sequelize(
@@ -16,6 +18,7 @@ const sequelize = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: process.env.DB_HOST,
+        port: DB_PORT,
         dialect: 'mysql',
         logging: false // Tắt log câu lệnh SQL cho đỡ rối terminal
     }
@@ -53,10 +56,17 @@ app.get('/api/users', async (req, res) => {
 // Yêu cầu 1: API POST - Thêm user mới
 app.post('/api/users', async (req, res) => {
     try {
-        const newUser = await User.create(req.body);
+        const name = String(req.body?.name || '').trim();
+        const studentId = String(req.body?.studentId || '').trim();
+
+        if (!name || !studentId) {
+            return res.status(400).json({ message: 'Vui lòng nhập đầy đủ họ tên và mã số sinh viên.' });
+        }
+
+        const newUser = await User.create({ name, studentId });
         res.status(201).json(newUser);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message || 'Không thể thêm sinh viên vào cơ sở dữ liệu.' });
     }
 });
 

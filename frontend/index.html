@@ -49,6 +49,20 @@
             padding: 10px;
             border-radius: 4px;
         }
+
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .ok {
+            color: #0f7a2a;
+        }
+
+        .error {
+            color: #c62828;
+        }
     </style>
 </head>
 
@@ -64,6 +78,7 @@
             <input type="text" id="studentId" placeholder="Mã số sinh viên" required>
             <button type="submit">Thêm Sinh Viên</button>
         </form>
+        <p id="status" class="status"></p>
 
         <h3>Danh sách Sinh Viên (từ Database)</h3>
         <ul id="userList"></ul>
@@ -71,11 +86,20 @@
 
     <script>
         const API_URL = 'http://localhost:5000/api/users';
+        const statusEl = document.getElementById('status');
+
+        function setStatus(message, isError = false) {
+            statusEl.textContent = message;
+            statusEl.className = `status ${isError ? 'error' : 'ok'}`;
+        }
 
         // Lấy dữ liệu từ Backend
         async function fetchUsers() {
             try {
                 const res = await fetch(API_URL);
+                if (!res.ok) {
+                    throw new Error('Không thể tải danh sách sinh viên từ backend.');
+                }
                 const users = await res.json();
                 const list = document.getElementById('userList');
                 list.innerHTML = '';
@@ -84,6 +108,7 @@
                 });
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu:", error);
+                setStatus(error.message || 'Lỗi khi tải dữ liệu.', true);
             }
         }
 
@@ -93,15 +118,26 @@
             const name = document.getElementById('name').value;
             const studentId = document.getElementById('studentId').value;
 
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, studentId })
-            });
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, studentId })
+                });
 
-            document.getElementById('name').value = '';
-            document.getElementById('studentId').value = '';
-            fetchUsers(); // Cập nhật lại danh sách
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.message || 'Thêm sinh viên thất bại.');
+                }
+
+                document.getElementById('name').value = '';
+                document.getElementById('studentId').value = '';
+                setStatus('Thêm sinh viên thành công.');
+                fetchUsers(); // Cập nhật lại danh sách
+            } catch (error) {
+                console.error("Lỗi khi thêm sinh viên:", error);
+                setStatus(error.message || 'Lỗi khi thêm sinh viên.', true);
+            }
         });
 
         // Chạy khi mở trang
