@@ -1,1 +1,47 @@
-# DevOps Mini Project - Submission Checklist\n\n## A. Thong tin chung\n- Ho ten sinh vien: Ung Hoang Khang\n- MSSV: 2251220258\n- Lop: IT01\n- Ten ung dung: DevOpsMiniProject_Khang\n\n## B. Gioi thieu ung dung\nUng dung quan ly sinh vien don gian voi frontend HTML/JS, backend Node.js/Express va MySQL. Nguoi dung co the xem danh sach sinh vien va them sinh vien moi thong qua form.\n\n## C. Tinh nang\n- Trang chu: hien thi danh sach sinh vien tu database\n- Form them sinh vien (POST /api/users)\n- API lay danh sach sinh vien (GET /api/users)\n- Health check (GET /health)\n- Trang thong tin ca nhan tai /about\n\n## D. Use Cases\n1. Nguoi dung mo trang chu de xem danh sach sinh vien\n2. Nguoi dung nhap thong tin vao form va bam "Them Sinh Vien"\n3. He thong luu du lieu vao MySQL va cap nhat danh sach\n4. Nguoi cham bai goi /health de kiem tra backend\n\n## E. Link can nop\n- GitHub repository: (dien link)\n- Docker Hub backend image: (dien link)\n- Docker Hub frontend image: (dien link)\n\n## F. Minh chung anh chup\n- [ ] Anh VSCode the hien commit history\n- [ ] Anh github.com hien thi danh sach branch\n- [ ] Anh Docker Desktop/CLI the hien container backend, frontend, database dang chay\n- [ ] Anh trang /about\n- [ ] Anh endpoint /health tra ve {\"status\":\"ok\"}\n\n## G. Kiem tra dieu kien de bai\n- [x] Co BE + FE + DB\n- [x] Co toi thieu 2 API (GET + POST)\n- [x] Co route /about\n- [x] Co route /health\n- [x] Co file .env\n- [x] Co file .env.example\n- [x] Co Dockerfile cho backend va frontend\n- [x] Co docker-compose.yml\n- [ ] Co >= 5 commit voi message ro rang\n- [ ] Co push image backend + frontend len Docker Hub\n
+# DevOps Mini Project - Submission Checklist
+
+## A. Thong tin chung
+- Ho ten sinh vien: Ung Hoang Khang
+- MSSV: 2251220258
+- Lop: IT01
+- Ten ung dung: DevOpsMiniProject_Khang
+
+## B. Gioi thieu ung dung
+Ung dung quan ly sinh vien don gian voi frontend HTML/JS, backend Node.js/Express va MySQL. Nguoi dung co the xem danh sach sinh vien va them sinh vien moi thong qua form.
+
+## C. Tinh nang
+- Trang chu: hien thi danh sach sinh vien tu database
+- Form them sinh vien (POST /api/users)
+- API lay danh sach sinh vien (GET /api/users)
+- Health check (GET /health)
+- Trang thong tin ca nhan tai /about
+
+## D. Use Cases
+1. Nguoi dung mo trang chu de xem danh sach sinh vien
+2. Nguoi dung nhap thong tin vao form va bam "Them Sinh Vien"
+3. He thong luu du lieu vao MySQL va cap nhat danh sach
+4. Nguoi cham bai goi /health de kiem tra backend
+
+## E. Link can nop
+- GitHub repository: (dien link)
+- Docker Hub backend image: (dien link)
+- Docker Hub frontend image: (dien link)
+
+## F. Minh chung anh chup
+- [ ] Anh VSCode the hien commit history
+- [ ] Anh github.com hien thi danh sach branch
+- [ ] Anh Docker Desktop/CLI the hien container backend, frontend, database dang chay
+- [ ] Anh trang /about
+- [ ] Anh endpoint /health tra ve {"status":"ok"}
+
+## G. Kiem tra dieu kien de bai
+- [x] Co BE + FE + DB
+- [x] Co toi thieu 2 API (GET + POST)
+- [x] Co route /about
+- [x] Co route /health
+- [x] Co file .env
+- [x] Co file .env.example
+- [x] Co Dockerfile cho backend va frontend
+- [x] Co docker-compose.yml
+- [x] Co >= 5 commit voi message ro rang
+- [ ] Co push image backend + frontend len Docker Hub
