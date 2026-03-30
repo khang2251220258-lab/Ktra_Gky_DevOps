@@ -29,13 +29,40 @@
 
 <body>
     <div class="card">
-        <h2>Thông Tin Sinh Viên</h2>
-        <p><strong>Họ và tên:</strong> Ung Hoàng Khang</p>
-        <p><strong>Mã số sinh viên:</strong> 2251220258</p>
-        <p><strong>Lớp:</strong> IT01</p>
+        <h2 id="title">Thông Tin Sinh Viên</h2>
+        <p><strong>Họ và tên:</strong> <span id="name">Ung Hoàng Khang</span></p>
+        <p><strong>Mã số sinh viên:</strong> <span id="studentId">2251220258</span></p>
+        <p><strong>Lớp:</strong> <span id="className">IT01</span></p>
         <hr>
         <a href="index.html">Quay lại trang chủ</a>
     </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/users';
+        const params = new URLSearchParams(window.location.search);
+        const selectedId = params.get('id');
+
+        async function loadStudentDetail(id) {
+            try {
+                const res = await fetch(`${API_URL}/${encodeURIComponent(id)}`);
+                if (!res.ok) {
+                    throw new Error('Không tìm thấy sinh viên đã chọn.');
+                }
+
+                const user = await res.json();
+                document.getElementById('title').textContent = 'Thông Tin Sinh Viên Được Chọn';
+                document.getElementById('name').textContent = user.name || '-';
+                document.getElementById('studentId').textContent = user.studentId || '-';
+                document.getElementById('className').textContent = user.className || '-';
+            } catch (error) {
+                document.getElementById('title').textContent = 'Không tải được thông tin sinh viên';
+            }
+        }
+
+        if (selectedId) {
+            loadStudentDetail(selectedId);
+        }
+    </script>
 </body>
 
 </html>
